@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mcu.list</title>
+    <style>
+        :root {
+            --bg: #fcfcfb;
+            --surface: #ffffff;
+            --text: #171717;
+            --muted: #7a7a76;
+            --border: #e7e5e0;
+            --accent: #b42318;
+            --accent-soft: #f7ecea;
+            --font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        [data-theme="dark"] {
+            --bg: #10100f;
+            --surface: #151514;
+            --text: #f4f2ed;
+            --muted: #9a9993;
+            --border: #292925;
+            --accent: #f0786c;
+            --accent-soft: #2b1917;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 50% -10%, rgba(180, 35, 24, .045), transparent 34rem),
+                var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 72px 28px 48px;
+            transition: background-color .2s ease, color .2s ease;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 58px;
+        }
+
+        .brand h1 {
+            font-size: 1.65rem;
+            line-height: 1;
+            letter-spacing: -.065em;
+            font-weight: 750;
+        }
+
+        .brand span { color: var(--accent); }
+
+        .brand p {
+            color: var(--muted);
+            font-size: .74rem;
+            margin-top: 11px;
+            letter-spacing: .025em;
+        }
+
+        .btn {
+            appearance: none;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: .67rem;
+            letter-spacing: .02em;
+            transition: transform .18s ease, background .18s ease, border-color .18s ease;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            transform: translateY(-1px);
+        }
+
+        .btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 14px;
+            margin-bottom: 26px;
+            align-items: end;
+        }
+
+        .search-input {
+            width: 100%;
+            background: transparent;
+            border: 0;
+            border-bottom: 1px solid var(--border);
+            border-radius: 0;
+            padding: 10px 2px;
+            color: var(--text);
+            font: inherit;
+            font-size: .9rem;
+            outline: none;
+            transition: border-color .18s ease;
+        }
+
+        .search-input::placeholder { color: #a2a19b; }
+        .search-input:focus { border-color: var(--accent); }
+
+        .movie-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .movie-card {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 18px;
+            margin-bottom: 9px;
+            box-shadow: 0 1px 0 rgba(0,0,0,.02);
+            transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+        }
+
+        .movie-card::before {
+            content: "";
+            position: absolute;
+            left: -1px;
+            top: 14px;
+            bottom: 14px;
+            width: 2px;
+            border-radius: 2px;
+            background: transparent;
+            transition: background .18s ease;
+        }
+
+        .movie-card:hover {
+            border-color: #d7d4cd;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(20, 20, 18, .055);
+        }
+
+        .movie-card:hover::before { background: var(--accent); }
+
+        .movie-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 20px;
+        }
+
+        .movie-title {
+            font-size: .96rem;
+            font-weight: 650;
+            letter-spacing: -.018em;
+        }
+
+        .movie-rating {
+            flex: 0 0 auto;
+            font-family: var(--font-mono);
+            font-size: .7rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-soft);
+            padding: 4px 7px;
+            border-radius: 999px;
+        }
+
+        .rating-na {
+            color: var(--muted);
+            background: transparent;
+            border: 1px solid var(--border);
+        }
+
+        .rating-high {
+            color: #1a7f37;
+            background: #e9f6ea;
+        }
+
+        .rating-mid {
+            color: #9a6700;
+            background: #fbf1da;
+        }
+
+        [data-theme="dark"] .rating-high {
+            color: #56d364;
+            background: #132a17;
+        }
+
+        [data-theme="dark"] .rating-mid {
+            color: #e3b341;
+            background: #2b2210;
+        }
+
+        .movie-meta {
+            font-size: .72rem;
+            font-family: var(--font-mono);
+            color: var(--muted);
+            margin: 7px 0 12px;
+            letter-spacing: .01em;
+        }
+
+        .movie-genres {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .genre-badge {
+            font-size: .62rem;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            background: var(--bg);
+            padding: 3px 7px;
+            border-radius: 999px;
+            font-family: var(--font-mono);
+        }
+
+        .status-message {
+            text-align: center;
+            color: var(--muted);
+            padding: 58px 0;
+            font-size: .76rem;
+            font-family: var(--font-mono);
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 0 3px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            color: var(--muted);
+            font-size: .66rem;
+            font-family: var(--font-mono);
+        }
+
+        footer span { color: var(--text); }
+
+        @media (max-width: 560px) {
+            body { padding: 44px 18px 30px; }
+            header { margin-bottom: 44px; }
+            .controls { grid-template-columns: 1fr; }
+            .controls .btn { justify-self: start; }
+            .movie-card { padding: 18px 15px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <h1>mcu.<span>list</span></h1>
+            <p>titles by Marvel Cinematic Universe</p>
+        </div>
+        <button class="btn" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">Dark mode</button>
+    </header>
+
+    <main>
+        <div class="controls">
+            <input type="search" id="searchInput" class="search-input" placeholder="Filter title or genre..." oninput="debouncedFilterMovies()" aria-label="Search movies">
+            <button class="btn" id="sortBtn" onclick="toggleSort()" aria-label="Toggle sort order">Oldest first</button>
+        </div>
+
+        <section id="movieList" class="movie-list">
+            <div class="status-message">Loading database...</div>
+        </section>
+    </main>
+
+    <footer>
+        <div>Total: <span id="totalCount">0</span></div>
+        <div id="sortLabel">Release Date (Oldest)</div>
+    </footer>
+
+    <script>
+        let allMovies = [];
+        let currentSortOrder = 'asc';
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            fetch('data.json')
+                .then(res => {
+                    if (!res.ok) throw new Error("Status " + res.status);
+                    return res.json();
+                })
+                .then(data => {
+                    allMovies = Array.isArray(data) ? data : [];
+                    filterMovies();
+                })
+                .catch(err => {
+                    console.error("Fetch error:", err);
+                    document.getElementById('movieList').innerHTML = 
+                        `<div class="status-message" style="color: var(--accent);">Failed to load data.json</div>`;
+                });
+        });
+
+        function toggleSort() {
+            currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+            document.getElementById('sortBtn').textContent = currentSortOrder === 'asc' ? 'Oldest first' : 'Newest first';
+            filterMovies();
+        }
+
+        function debounce(fn, delay = 150) {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => fn(...args), delay);
+            };
+        }
+
+        const debouncedFilterMovies = debounce(() => filterMovies(), 150);
+
+        function filterMovies() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            const filtered = allMovies.filter(m => {
+                const titleMatch = m.title && m.title.toLowerCase().includes(query);
+                const genresString = Array.isArray(m.genres) ? m.genres.join(' ') : (m.genres || '');
+                return titleMatch || genresString.toLowerCase().includes(query);
+            });
+
+            filtered.sort((a, b) => {
+                const dateA = a.release_date || '';
+                const dateB = b.release_date || '';
+                const comp = dateA.localeCompare(dateB);
+                return currentSortOrder === 'desc' ? -comp : comp;
+            });
+
+            document.getElementById('sortLabel').textContent = 
+                currentSortOrder === 'desc' ? 'Newest first' : 'Oldest first';
+
+            renderMovies(filtered);
+        }
+
+        function renderMovies(movies) {
+            const container = document.getElementById('movieList');
+            document.getElementById('totalCount').textContent = movies.length;
+
+            if (movies.length === 0) {
+                container.innerHTML = `<div class="status-message">No matching records.</div>`;
+                return;
+            }
+
+            container.innerHTML = movies.map(movie => {
+                let titleDisplay = movie.title;
+                if (movie.season !== null && movie.season !== undefined) {
+                    titleDisplay += ` (S${movie.season})`;
+                } else if (movie.year) {
+                    titleDisplay += ` (${movie.year})`;
+                }
+
+                const genresList = typeof movie.genres === 'string' 
+                    ? movie.genres.split(',').map(g => g.trim())
+                    : (Array.isArray(movie.genres) ? movie.genres : []);
+
+                const ratingClass = getRatingClass(movie.imdb_rating);
+                const ratingNum = Number(movie.imdb_rating);
+                const ratingText = (movie.imdb_rating !== null && movie.imdb_rating !== undefined && Number.isFinite(ratingNum))
+                    ? ratingNum.toFixed(1)
+                    : 'N/A';
+
+                return `
+                    <article class="movie-card">
+                        <div class="movie-header">
+                            <span class="movie-title">${escapeHtml(titleDisplay)}</span>
+                            <span class="movie-rating ${ratingClass}">★ ${ratingText}</span>
+                        </div>
+                        <div class="movie-meta">
+                            ${escapeHtml(movie.type || 'Movie')} • ${(movie.runtime !== null && movie.runtime !== undefined) ? movie.runtime + ' mins' : 'N/A'} • ${escapeHtml(movie.release_date || 'N/A')}
+                        </div>
+                        <div class="movie-genres">
+                            ${genresList.map(g => `<span class="genre-badge">${escapeHtml(g)}</span>`).join('')}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function getRatingClass(rating) {
+            if (rating === null || rating === undefined || !Number.isFinite(Number(rating))) return 'rating-na';
+            if (Number(rating) < 6) return 'rating-low';
+            if (Number(rating) < 7.5) return 'rating-mid';
+            return 'rating-high';
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            document.getElementById('themeToggle').textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+            localStorage.setItem('theme', theme);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            applyTheme(current === 'dark' ? 'light' : 'dark');
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
