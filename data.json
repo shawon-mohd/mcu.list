@@ -902,7 +902,7 @@
     {
         "title": "VisionQuest",
         "type": "TV Mini Series",
-        "season": "1",
+        "season": 1,
         "imdb_rating": null,
         "runtime": null,
         "year": "2026",
