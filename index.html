@@ -1,482 +1,386 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mcu.list</title>
+    <title>mcu list</title>
     <style>
         :root {
-            --bg: #fcfcfb;
-            --surface: #ffffff;
-            --text: #171717;
-            --muted: #7a7a76;
-            --border: #e7e5e0;
-            --accent: #b42318;
-            --accent-soft: #f7ecea;
-            --font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            --bg-color: #f7f7f8;
+            --card-bg: #ffffff;
+            --text-main: #111111;
+            --text-muted: #8e8e93;
+            --border-color: #e5e5ea;
+            --btn-bg: #e9e9eb;
+            --star-color: #f5c518;
         }
 
         [data-theme="dark"] {
-            --bg: #10100f;
-            --surface: #151514;
-            --text: #f4f2ed;
-            --muted: #9a9993;
-            --border: #292925;
-            --accent: #f0786c;
-            --accent-soft: #2b1917;
+            --bg-color: #121212;
+            --card-bg: #1c1c1e;
+            --text-main: #f2f2f7;
+            --text-muted: #8e8e93;
+            --border-color: #2c2c2e;
+            --btn-bg: #2c2c2e;
+            --star-color: #f5c518;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        html { scroll-behavior: smooth; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
-            min-height: 100vh;
-            background:
-                radial-gradient(circle at 50% -10%, rgba(180, 35, 24, .045), transparent 34rem),
-                var(--bg);
-            color: var(--text);
-            font-family: var(--font-sans);
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 72px 28px 48px;
-            transition: background-color .2s ease, color .2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.4;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            -webkit-font-smoothing: antialiased;
         }
 
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Header */
         header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 24px;
-            margin-bottom: 58px;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        .brand h1 {
-            font-size: 1.65rem;
-            line-height: 1;
-            letter-spacing: -.065em;
-            font-weight: 750;
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
-        .brand span { color: var(--accent); }
-
-        .brand p {
-            color: var(--muted);
-            font-size: .74rem;
-            margin-top: 11px;
-            letter-spacing: .025em;
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
         }
 
-        .btn {
-            appearance: none;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 8px 12px;
-            border-radius: 999px;
+        .action-btn {
+            background-color: var(--btn-bg);
+            border: none;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 500;
             cursor: pointer;
-            font-family: var(--font-mono);
-            font-size: .67rem;
-            letter-spacing: .02em;
-            transition: transform .18s ease, background .18s ease, border-color .18s ease;
+            padding: 0.5rem 0.85rem;
+            border-radius: 8px;
+            transition: opacity 0.2s;
         }
 
-        .btn:hover {
-            border-color: var(--accent);
-            background: var(--accent-soft);
-            transform: translateY(-1px);
+        .action-btn:hover {
+            opacity: 0.8;
         }
 
-        .btn:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 3px;
-        }
-
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 14px;
-            margin-bottom: 26px;
-            align-items: end;
+        /* Controls Area */
+        .controls-container {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
         }
 
         .search-input {
-            width: 100%;
-            background: transparent;
-            border: 0;
-            border-bottom: 1px solid var(--border);
-            border-radius: 0;
-            padding: 10px 2px;
-            color: var(--text);
-            font: inherit;
-            font-size: .9rem;
+            flex-grow: 1;
+            padding: 0.65rem 1rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
             outline: none;
-            transition: border-color .18s ease;
+            transition: border-color 0.2s ease;
         }
 
-        .search-input::placeholder { color: #a2a19b; }
-        .search-input:focus { border-color: var(--accent); }
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
 
+        .search-input:focus {
+            border-color: var(--text-muted);
+        }
+
+        /* Movie List */
         .movie-list {
             display: flex;
             flex-direction: column;
+            gap: 0.75rem;
         }
 
+        /* Movie Card Layout matching target UI */
         .movie-card {
-            position: relative;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 0 rgba(0,0,0,.02);
             display: flex;
-            gap: 18px;
             align-items: center;
-            overflow: hidden;
-            transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+            gap: 1.25rem;
+            padding: 0.85rem;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
         }
 
-        .movie-card::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 14px;
-            bottom: 14px;
-            width: 3px;
-            border-radius: 0 2px 2px 0;
-            background: transparent;
-            transition: background .18s ease;
-        }
-
-        .movie-card:hover {
-            border-color: #d7d4cd;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(20, 20, 18, .055);
-        }
-
-        .movie-card:hover::before { background: var(--accent); }
-
-        .poster-container {
+        /* Poster */
+        .movie-poster-wrapper {
             flex-shrink: 0;
-            width: 64px;
-            height: 96px;
-            border-radius: 6px;
+            width: 80px;
+            aspect-ratio: 2 / 3;
+            background-color: var(--border-color);
+            border-radius: 10px;
             overflow: hidden;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .poster-img {
+        .movie-poster {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        .poster-placeholder {
-            font-size: 0.6rem;
-            font-family: var(--font-mono);
-            color: var(--muted);
-            text-align: center;
-            padding: 4px;
-        }
-
-        .movie-content {
-            flex: 1;
-            min-width: 0;
+        /* Movie Info Area */
+        .movie-info {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            gap: 0.35rem;
+            min-width: 0;
         }
 
-        .movie-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .movie-title {
-            font-size: .98rem;
-            font-weight: 650;
-            letter-spacing: -.018em;
-            line-height: 1.3;
-        }
-
-        .movie-rating {
-            flex: 0 0 auto;
-            font-family: var(--font-mono);
-            font-size: .7rem;
+        .movie-title-area {
+            font-size: 1.15rem;
             font-weight: 700;
-            color: var(--accent);
-            background: var(--accent-soft);
-            padding: 4px 7px;
-            border-radius: 999px;
-            white-space: nowrap;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            color: var(--text-main);
+            word-wrap: break-word;
         }
 
-        .rating-na {
-            color: var(--muted);
-            background: transparent;
-            border: 1px solid var(--border);
+        .movie-season {
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
-        .rating-high {
-            color: #1a7f37;
-            background: #e9f6ea;
-        }
-
-        .rating-mid {
-            color: #9a6700;
-            background: #fbf1da;
-        }
-
-        .rating-low {
-            color: #cf222e;
-            background: #ffebe9;
-        }
-
-        [data-theme="dark"] .rating-high {
-            color: #56d364;
-            background: #132a17;
-        }
-
-        [data-theme="dark"] .rating-mid {
-            color: #e3b341;
-            background: #2b2210;
-        }
-
-        [data-theme="dark"] .rating-low {
-            color: #ff7b72;
-            background: #3c1e1e;
-        }
-
+        /* Inline Metadata Row */
         .movie-meta {
-            font-size: .72rem;
-            font-family: var(--font-mono);
-            color: var(--muted);
-            margin: 6px 0 10px;
-            letter-spacing: .01em;
-        }
-
-        .movie-genres {
             display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
         }
 
-        .genre-badge {
-            font-size: .62rem;
-            color: var(--muted);
-            border: 1px solid var(--border);
-            background: var(--bg);
-            padding: 2px 7px;
-            border-radius: 999px;
-            font-family: var(--font-mono);
+        .meta-dot {
+            font-size: 0.6rem;
+            line-height: 1;
         }
 
-        .status-message {
+        /* Rating Row */
+        .movie-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 0.1rem;
+        }
+
+        .movie-rating-star {
+            color: var(--star-color);
+            font-size: 0.9rem;
+        }
+
+        /* Empty State */
+        .empty-state {
             text-align: center;
-            color: var(--muted);
-            padding: 58px 0;
-            font-size: .76rem;
-            font-family: var(--font-mono);
+            color: var(--text-muted);
+            padding: 3rem 0;
+            font-size: 0.95rem;
         }
 
-        footer {
-            margin-top: 40px;
-            padding: 0 3px;
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            color: var(--muted);
-            font-size: .66rem;
-            font-family: var(--font-mono);
-        }
+        /* Responsive adjustments */
+        @media (max-width: 500px) {
+            .movie-card {
+                gap: 0.9rem;
+                padding: 0.75rem;
+            }
 
-        footer span { color: var(--text); }
+            .movie-poster-wrapper {
+                width: 70px;
+            }
 
-        @media (max-width: 560px) {
-            body { padding: 44px 18px 30px; }
-            header { margin-bottom: 44px; }
-            .controls { grid-template-columns: 1fr; }
-            .controls .btn { justify-self: start; }
-            .movie-card { padding: 14px 12px; gap: 12px; }
-            .poster-container { width: 52px; height: 78px; }
+            .movie-title-area {
+                font-size: 1rem;
+            }
+
+            .movie-meta, .movie-rating {
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand">
-            <h1>mcu.<span>list</span></h1>
-            <p>titles by Marvel Cinematic Universe</p>
-        </div>
-        <button class="btn" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">Dark mode</button>
-    </header>
+    <div class="container">
+        <header>
+            <h1>mcu.list</h1>
+            <div class="header-actions">
+                <button class="action-btn" id="sortBtn">Oldest First ↑</button>
+                <button class="action-btn" id="themeToggle" aria-label="Toggle theme">Light mode</button>
+            </div>
+        </header>
 
-    <main>
-        <div class="controls">
-            <input type="search" id="searchInput" class="search-input" placeholder="Filter title or genre..." oninput="debouncedFilterMovies()" aria-label="Search movies">
-            <button class="btn" id="sortBtn" onclick="toggleSort()" aria-label="Toggle sort order">Oldest first</button>
-        </div>
+        <main>
+            <div class="controls-container">
+                <input 
+                    type="search" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="Search by title..."
+                    autocomplete="off"
+                >
+            </div>
 
-        <section id="movieList" class="movie-list">
-            <div class="status-message">Loading database...</div>
-        </section>
-    </main>
-
-    <footer>
-        <div>Total: <span id="totalCount">0</span></div>
-        <div id="sortLabel">Release Date (Oldest)</div>
-    </footer>
+            <div class="movie-list" id="movieList">
+                <!-- Data populated here -->
+            </div>
+        </main>
+    </div>
 
     <script>
         let allMovies = [];
-        let currentSortOrder = 'asc';
+        let isAscending = true; // Default sorting state: Oldest first
+        
+        // DOM Elements
+        const movieListElement = document.getElementById('movieList');
+        const searchInput = document.getElementById('searchInput');
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const sortBtn = document.getElementById('sortBtn');
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            applyTheme(savedTheme);
+        // Theme Initialization (Default dark mode to match target design)
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeButtonText(savedTheme);
 
-            fetch('new.json')
-                .then(res => {
-                    if (!res.ok) throw new Error("Status " + res.status);
-                    return res.json();
-                })
-                .then(data => {
-                    allMovies = Array.isArray(data) ? data : [];
-                    filterMovies();
-                })
-                .catch(err => {
-                    console.error("Fetch error:", err);
-                    document.getElementById('movieList').innerHTML = 
-                        `<div class="status-message" style="color: var(--accent);">Failed to load data.json</div>`;
-                });
-        });
-
-        function toggleSort() {
-            currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
-            document.getElementById('sortBtn').textContent = currentSortOrder === 'asc' ? 'Oldest first' : 'Newest first';
-            filterMovies();
+        // Fetch Data
+        async function loadMovies() {
+            try {
+                const response = await fetch('./data.json');
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                allMovies = await response.json();
+                processAndRender();
+            } catch (error) {
+                console.error('Error loading movie data:', error);
+                movieListElement.innerHTML = `
+                    <div class="empty-state">
+                        Failed to load data.json. Ensure the file is in the same directory and served via a web server.
+                    </div>`;
+            }
         }
 
-        function debounce(fn, delay = 150) {
-            let timeout;
-            return (...args) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => fn(...args), delay);
-            };
-        }
+        // Process Filter & Sort, then Render
+        function processAndRender() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            // Filter by title
+            let filtered = allMovies.filter(movie => 
+                (movie.title || '').toLowerCase().includes(searchTerm)
+            );
 
-        const debouncedFilterMovies = debounce(() => filterMovies(), 150);
-
-        function filterMovies() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-
-            const filtered = allMovies.filter(m => {
-                const titleMatch = m.title && m.title.toLowerCase().includes(query);
-                const genresString = Array.isArray(m.genres) ? m.genres.join(' ') : (m.genres || '');
-                return titleMatch || genresString.toLowerCase().includes(query);
-            });
-
+            // Sort by release_date (Oldest first default)
             filtered.sort((a, b) => {
-                const dateA = a.release_date || '';
-                const dateB = b.release_date || '';
-                const comp = dateA.localeCompare(dateB);
-                return currentSortOrder === 'desc' ? -comp : comp;
+                const dateA = new Date(a.release_date || '9999-12-31');
+                const dateB = new Date(b.release_date || '9999-12-31');
+                return isAscending ? dateA - dateB : dateB - dateA;
             });
-
-            document.getElementById('sortLabel').textContent = 
-                currentSortOrder === 'desc' ? 'Newest first' : 'Oldest first';
 
             renderMovies(filtered);
         }
 
+        // Render Cards matching requested UI layout
         function renderMovies(movies) {
-            const container = document.getElementById('movieList');
-            document.getElementById('totalCount').textContent = movies.length;
-
             if (movies.length === 0) {
-                container.innerHTML = `<div class="status-message">No matching records.</div>`;
+                movieListElement.innerHTML = '<div class="empty-state">No matching titles found.</div>';
                 return;
             }
 
-            container.innerHTML = movies.map(movie => {
-                let titleDisplay = movie.title;
-                if (movie.season !== null && movie.season !== undefined) {
-                    titleDisplay += ` (S${movie.season})`;
-                } else if (movie.year) {
-                    titleDisplay += ` (${movie.year})`;
-                }
+            const html = movies.map(movie => {
+                const rating = movie.imdb_rating ? movie.imdb_rating.toFixed(1) : 'N/A';
+                const runtime = movie.runtime ? `${movie.runtime}m` : 'N/A';
+                const year = movie.year || (movie.release_date ? movie.release_date.split('-')[0] : '');
+                const type = movie.type || 'Video';
+                const seasonText = movie.season ? `<span class="movie-season">(Season ${movie.season})</span>` : '';
 
-                const genresList = typeof movie.genres === 'string' 
-                    ? movie.genres.split(',').map(g => g.trim()).filter(Boolean)
-                    : (Array.isArray(movie.genres) ? movie.genres : []);
-
-                const ratingClass = getRatingClass(movie.imdb_rating);
-                const ratingNum = Number(movie.imdb_rating);
-                const ratingText = (movie.imdb_rating !== null && movie.imdb_rating !== undefined && Number.isFinite(ratingNum))
-                    ? ratingNum.toFixed(1)
-                    : 'N/A';
-
-                const imgHtml = movie.cover_img 
-                    ? `<img src="${escapeHtml(movie.cover_img)}" alt="${escapeHtml(movie.title)}" class="poster-img" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'poster-placeholder\\'>No Cover</span>';">`
-                    : `<span class="poster-placeholder">No Cover</span>`;
+                // Build metadata row dynamically based on available fields
+                const metaParts = [year, runtime, type].filter(Boolean);
+                const metaFormatted = metaParts.join(' <span class="meta-dot">&bull;</span> ');
 
                 return `
                     <article class="movie-card">
-                        <div class="poster-container">
-                            ${imgHtml}
+                        <div class="movie-poster-wrapper">
+                            <img 
+                                src="${movie.cover_img}" 
+                                alt="${movie.title}" 
+                                class="movie-poster"
+                                loading="lazy"
+                                onerror="this.style.display='none'"
+                            >
                         </div>
-                        <div class="movie-content">
-                            <div class="movie-header">
-                                <span class="movie-title">${escapeHtml(titleDisplay)}</span>
-                                <span class="movie-rating ${ratingClass}">★ ${ratingText}</span>
+                        <div class="movie-info">
+                            <div class="movie-title-area">
+                                ${movie.title} ${seasonText}
                             </div>
                             <div class="movie-meta">
-                                ${escapeHtml(movie.type || 'Movie')} • ${(movie.runtime !== null && movie.runtime !== undefined) ? movie.runtime + ' mins' : 'N/A'} • ${escapeHtml(movie.release_date || 'N/A')}
+                                ${metaFormatted}
                             </div>
-                            <div class="movie-genres">
-                                ${genresList.map(g => `<span class="genre-badge">${escapeHtml(g)}</span>`).join('')}
+                            <div class="movie-rating">
+                                <span class="movie-rating-star">★</span> ${rating}
                             </div>
                         </div>
                     </article>
                 `;
             }).join('');
+
+            movieListElement.innerHTML = html;
         }
 
-        function getRatingClass(rating) {
-            if (rating === null || rating === undefined || !Number.isFinite(Number(rating))) return 'rating-na';
-            if (Number(rating) < 6) return 'rating-low';
-            if (Number(rating) < 7.5) return 'rating-mid';
-            return 'rating-high';
+        // Search Logic
+        searchInput.addEventListener('input', processAndRender);
+
+        // Sort Button Toggle Logic
+        sortBtn.addEventListener('click', () => {
+            isAscending = !isAscending;
+            sortBtn.textContent = isAscending ? 'Oldest First ↑' : 'Newest First ↓';
+            processAndRender();
+        });
+
+        // Theme Toggle Logic
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButtonText(newTheme);
+        });
+
+        function updateThemeButtonText(theme) {
+            themeToggleBtn.textContent = theme === 'light' ? 'Dark mode' : 'Light mode';
         }
 
-        function applyTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            document.getElementById('themeToggle').textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
-            localStorage.setItem('theme', theme);
-        }
-
-        function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme');
-            applyTheme(current === 'dark' ? 'light' : 'dark');
-        }
-
-        function escapeHtml(str) {
-            return String(str)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
+        // Initialize application
+        loadMovies();
     </script>
 </body>
 </html>
