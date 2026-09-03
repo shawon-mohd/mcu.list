@@ -79,7 +79,6 @@
             color: var(--text-main);
         }
 
-        /* Minimal Borderless Search Input */
         .controls-container {
             margin-bottom: 2.5rem;
         }
@@ -133,7 +132,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            filter: grayscale(10%);
+            filter: grayscale(20%);
             transition: filter 0.2s ease, transform 0.2s ease;
         }
 
@@ -151,14 +150,14 @@
         }
 
         .movie-title-area {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 500;
             color: var(--text-main);
         }
 
         .movie-season {
             color: var(--text-muted);
-            font-weight: 500;
+            font-weight: 400;
         }
 
         .movie-meta {
@@ -184,8 +183,9 @@
         }
 
         .movie-rating-star {
+            font-size: 0.8rem;
             color: #ffde34;
-            font-size: 0.75rem;
+            margin-top: -0.1rem;
         }
 
         .empty-state {
@@ -254,7 +254,7 @@
                 console.error('Error loading movie data:', error);
                 movieListElement.innerHTML = `
                     <div class="empty-state">
-                        Failed to load data.json.
+                        Failed to load data.
                     </div>`;
             }
         }
@@ -284,9 +284,9 @@
             const html = movies.map(movie => {
                 const rating = movie.imdb_rating ? movie.imdb_rating.toFixed(1) : 'N/A';
                 const runtime = movie.runtime ? `${movie.runtime}m` : 'N/A';
-                const year = movie.year || (movie.release_date ? movie.release_date.split('-')[0] : null);
+                const year = movie.year || (movie.year ? movie.year : 'N/A');
                 const type = movie.type || null;
-                const seasonText = movie.season ? `<span class="movie-season"> - Season ${movie.season}</span>` : '';
+                const seasonText = movie.season ? `<span class="movie-season"> — Season ${movie.season}</span>` : '';
 
                 const metaParts = [year, runtime, type].filter(Boolean);
                 const metaFormatted = metaParts.join(' <span class="meta-dot">•</span> ');
@@ -345,5 +345,6 @@
 
         loadMovies();
     </script>
+    <footer></footer>
 </body>
 </html>

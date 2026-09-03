@@ -336,18 +336,6 @@
         "cover_img": "https://image.tmdb.org/t/p/w154/49XzINhH4LFsgz7cx6TOPcHUJUL.jpg"
     },
     {
-        "imdb_id": "tt4154858",
-        "title": "Inhumans",
-        "type": "TV Series",
-        "season": null,
-        "runtime": 45,
-        "year": 2017,
-        "imdb_rating": 4.9,
-        "release_date": "2017-09-29",
-        "genres": "Action, Adventure, Sci-Fi",
-        "cover_img": "https://image.tmdb.org/t/p/w154/zKfGip55oJ9tdzhyd9ayGyFFhuo.jpg"
-    },
-    {
         "imdb_id": "tt3501632",
         "title": "Thor: Ragnarok",
         "type": "Movie",
@@ -370,18 +358,6 @@
         "release_date": "2017-11-17",
         "genres": "Action, Crime, Drama, Thriller",
         "cover_img": "https://image.tmdb.org/t/p/w154/tM6xqRKXoloH9UchaJEyyRE9O1w.jpg"
-    },
-    {
-        "imdb_id": "tt1236246",
-        "title": "Runaways",
-        "type": "TV Series",
-        "season": null,
-        "runtime": 60,
-        "year": 2017,
-        "imdb_rating": 6.8,
-        "release_date": "2017-11-21",
-        "genres": "Action, Drama, Sci-Fi",
-        "cover_img": "https://image.tmdb.org/t/p/w154/hnHEhbzh0F7kN3Ah1lzRjtQuW16.jpg"
     },
     {
         "imdb_id": "tt2364582",
@@ -430,18 +406,6 @@
         "release_date": "2018-04-27",
         "genres": "Action, Adventure, Sci-Fi",
         "cover_img": "https://image.tmdb.org/t/p/w154/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg"
-    },
-    {
-        "imdb_id": "tt5614844",
-        "title": "Cloak & Dagger",
-        "type": "TV Series",
-        "season": 1,
-        "runtime": 44,
-        "year": 2018,
-        "imdb_rating": 6.6,
-        "release_date": "2018-06-07",
-        "genres": "Action, Adventure, Drama, Sci-Fi",
-        "cover_img": "https://image.tmdb.org/t/p/w154/pYnRJuBPEqZO1o4fcxBTgmKNHfy.jpg"
     },
     {
         "imdb_id": "tt3322314",
@@ -516,18 +480,6 @@
         "cover_img": "https://image.tmdb.org/t/p/w154/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg"
     },
     {
-        "imdb_id": "tt5614844",
-        "title": "Cloak & Dagger",
-        "type": "TV Series",
-        "season": 2,
-        "runtime": 44,
-        "year": 2018,
-        "imdb_rating": 6.6,
-        "release_date": "2019-04-04",
-        "genres": "Action, Adventure, Drama, Sci-Fi",
-        "cover_img": "https://image.tmdb.org/t/p/w154/pYnRJuBPEqZO1o4fcxBTgmKNHfy.jpg"
-    },
-    {
         "imdb_id": "tt4154796",
         "title": "Avengers: Endgame",
         "type": "Movie",
@@ -586,18 +538,6 @@
         "release_date": "2020-05-27",
         "genres": "Action, Adventure, Sci-Fi, Thriller",
         "cover_img": "https://image.tmdb.org/t/p/w154/gHUCCMy1vvj58tzE3dZqeC9SXus.jpg"
-    },
-    {
-        "imdb_id": "tt10266874",
-        "title": "Helstrom",
-        "type": "TV Series",
-        "season": 1,
-        "runtime": 50,
-        "year": 2020,
-        "imdb_rating": 6.7,
-        "release_date": "2020-10-16",
-        "genres": "Action, Adventure, Drama, Fantasy, Horror",
-        "cover_img": "https://image.tmdb.org/t/p/w154/5QmcKsepYpO9XYsWNLwsiULoaAu.jpg"
     },
     {
         "imdb_id": "tt9140560",
