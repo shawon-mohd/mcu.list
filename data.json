@@ -852,6 +852,18 @@
         "cover_img": "https://image.tmdb.org/t/p/w154/vFyJH630cF68LohVYjQW49074Sy.jpg"
     },
     {
+        "imdb_id": "tt16026746",
+        "title": "X-Men '97",
+        "type": "TV Series",
+        "season": 1,
+        "runtime": 22,
+        "year": 2024,
+        "imdb_rating": 8.7,
+        "release_date": "2024-03-20",
+        "genres": "Animation, Action, Adventure, Drama, Sci-Fi",
+        "cover_img": "https://image.tmdb.org/t/p/w154/2HKBc5UiFw8JrruHq8S1Y7TnlW0.jpg"
+    },
+    {
         "imdb_id": "tt6263850",
         "title": "Deadpool & Wolverine",
         "type": "Movie",
@@ -1018,6 +1030,18 @@
         "release_date": "2026-05-12",
         "genres": "Action, Adventure, Crime, Drama, Thriller",
         "cover_img": "https://image.tmdb.org/t/p/w154/qQclTgLMDvGBuUBFGHRipxkEwWR.jpg"
+    },
+    {
+        "imdb_id": "tt16026746",
+        "title": "X-Men '97",
+        "type": "TV Series",
+        "season": 2,
+        "runtime": 22,
+        "year": 2024,
+        "imdb_rating": 8.7,
+        "release_date": "2026-07-01",
+        "genres": "Animation, Action, Adventure, Drama, Sci-Fi",
+        "cover_img": "https://image.tmdb.org/t/p/w154/2HKBc5UiFw8JrruHq8S1Y7TnlW0.jpg"
     },
     {
         "imdb_id": "tt22084616",
