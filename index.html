@@ -11,6 +11,9 @@
             --text-muted: #888888;
             --line: #eeeeee;
             --poster-bg: #f5f5f7;
+            --primary: #ed1d24;
+            --progress-bg: #e0e0e0;
+            --progress-fill: #4CAF50;
         }
 
         [data-theme="dark"] {
@@ -19,6 +22,8 @@
             --text-muted: #666666;
             --line: #1a1a1a;
             --poster-bg: #181818;
+            --progress-bg: #2a2a2a;
+            --progress-fill: #66BB6A;
         }
 
         * {
@@ -35,6 +40,7 @@
             -webkit-font-smoothing: antialiased;
             -webkit-tap-highlight-color: transparent;
             transition: background-color 0.2s, color 0.2s;
+            padding-bottom: 70px;
         }
 
         .container {
@@ -72,11 +78,12 @@
             cursor: pointer;
             padding: 6px 10px;
             border-radius: 4px;
-            transition: color 0.15s ease;
+            transition: color 0.15s ease, border-color 0.15s ease;
         }
 
         button.action-btn:hover {
             color: var(--text-main);
+            border-color: var(--text-main);
         }
 
         .controls-container {
@@ -116,6 +123,11 @@
             gap: 0.6rem;
             text-decoration: none;
             color: inherit;
+            transition: opacity 0.2s;
+        }
+
+        .movie-card.watched {
+            opacity: 0.65;
         }
 
         .movie-poster-wrapper {
@@ -125,6 +137,7 @@
             background-color: var(--poster-bg);
             border-radius: 4px;
             overflow: hidden;
+            position: relative;
         }
 
         .movie-poster {
@@ -141,12 +154,34 @@
             transform: scale(1.03);
         }
 
+        .movie-card.watched .movie-poster {
+            filter: grayscale(80%);
+        }
+
+        .watched-badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: white;
+            border: 2px solid var(--bg);
+        }
+
         /* Clean Typography Hierarchy */
         .movie-info {
             display: flex;
             flex-direction: column;
             gap: 0.15rem;
             min-width: 0;
+            flex: 1;
         }
 
         .movie-title-area {
@@ -188,11 +223,94 @@
             margin-top: -0.1rem;
         }
 
+        .watch-btn {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--line);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .watch-btn:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+        }
+
+        .watch-btn.watched {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
         .empty-state {
             text-align: center;
             color: var(--text-muted);
             padding: 4rem 0;
             font-size: 0.85rem;
+        }
+
+        /* Sticky Footer Progress Bar */
+        .progress-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg);
+            border-top: 1px solid var(--line);
+            padding: 0.75rem 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background-color: rgba(13, 13, 13, 0.95);
+        }
+
+        [data-theme="light"] .progress-footer {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .progress-container {
+            max-width: 580px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .progress-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            min-width: 50px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background-color: var(--progress-bg);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--progress-fill);
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .progress-percent {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            min-width: 35px;
+            text-align: right;
         }
 
         @media (max-width: 480px) {
@@ -201,6 +319,12 @@
             }
             .movie-poster-wrapper {
                 width: 60px;
+            }
+            .progress-label {
+                display: none;
+            }
+            .progress-percent {
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -211,7 +335,7 @@
         <header>
             <h1>mcu<span style='color: #ed1d24;'>.list</span></h1>
             <div class="header-actions">
-                <button class="action-btn" id="sortBtn">oldest</button>
+                <button class="action-btn" id="sortBtn" aria-label="Sort by date">oldest</button>
                 <button class="action-btn" id="themeToggle" aria-label="Toggle theme">light</button>
             </div>
         </header>
@@ -231,24 +355,82 @@
         </main>
     </div>
 
+    <!-- Sticky Progress Footer -->
+    <div class="progress-footer">
+        <div class="progress-container">
+            <span class="progress-label">watched</span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+    </div>
+
     <script>
         let allMovies = [];
         let isAscending = true;
+        const STORAGE_KEY = 'mcu_watched';
+        let watchedMap = {};
         
         const movieListElement = document.getElementById('movieList');
         const searchInput = document.getElementById('searchInput');
         const themeToggleBtn = document.getElementById('themeToggle');
         const sortBtn = document.getElementById('sortBtn');
+        const progressFill = document.getElementById('progressFill');
+        const progressPercent = document.getElementById('progressPercent');
 
+        // Load theme
         const savedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeButtonText(savedTheme);
+
+        // Load watched state
+        function loadWatchedState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            watchedMap = saved ? JSON.parse(saved) : {};
+        }
+
+        // Save watched state
+        function saveWatchedState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(watchedMap));
+        }
+
+        // Generate unique ID for each item (title + season)
+        function getItemId(movie) {
+            return `${movie.title}-S${movie.season || 0}`;
+        }
+
+        // Toggle watched status
+        function toggleWatched(movie) {
+            const id = getItemId(movie);
+            watchedMap[id] = !watchedMap[id];
+            saveWatchedState();
+            updateProgress();
+            processAndRender();
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            if (allMovies.length === 0) {
+                progressFill.style.width = '0%';
+                progressPercent.textContent = '0%';
+                return;
+            }
+
+            const watched = allMovies.filter(movie => watchedMap[getItemId(movie)]).length;
+            const percentage = Math.round((watched / allMovies.length) * 100);
+            
+            progressFill.style.width = percentage + '%';
+            progressPercent.textContent = `${watched}/${allMovies.length}`;
+        }
 
         async function loadMovies() {
             try {
                 const response = await fetch('./data.json');
                 if (!response.ok) throw new Error('Network response was not ok');
                 allMovies = await response.json();
+                loadWatchedState();
+                updateProgress();
                 processAndRender();
             } catch (error) {
                 console.error('Error loading movie data:', error);
@@ -281,18 +463,21 @@
                 return;
             }
 
-            const html = movies.map(movie => {
+            const html = movies.map((movie, index) => {
                 const rating = movie.imdb_rating ? movie.imdb_rating.toFixed(1) : 'N/A';
                 const runtime = movie.runtime ? `${movie.runtime}m` : 'N/A';
-                const year = movie.year || (movie.year ? movie.year : 'N/A');
+                const year = movie.year || 'N/A';
                 const type = movie.type || null;
                 const seasonText = movie.season ? `<span class="movie-season"> — Season ${movie.season}</span>` : '';
+                const itemId = getItemId(movie);
+                const isWatched = watchedMap[itemId];
+                const watchedClass = isWatched ? 'watched' : '';
 
                 const metaParts = [year, runtime, type].filter(Boolean);
                 const metaFormatted = metaParts.join(' <span class="meta-dot">•</span> ');
 
                 return `
-                    <article class="movie-card">
+                    <article class="movie-card ${watchedClass}" data-movie-id="${itemId}">
                         <div class="movie-poster-wrapper">
                             <img 
                                 src="${movie.cover_img}" 
@@ -301,6 +486,7 @@
                                 loading="lazy"
                                 onerror="this.style.display='none'"
                             >
+                            ${isWatched ? '<div class="watched-badge">✓</div>' : ''}
                         </div>
                         <div class="movie-info">
                             <div class="movie-title-area">
@@ -315,11 +501,29 @@
                                 </div>
                             ` : ''}
                         </div>
+                        <button class="watch-btn ${watchedClass}" 
+                                data-movie-id="${itemId}"
+                                aria-label="Mark as watched"
+                                title="${isWatched ? 'Mark as unwatched' : 'Mark as watched'}">
+                            ${isWatched ? '✓' : ''}
+                        </button>
                     </article>
                 `;
             }).join('');
 
             movieListElement.innerHTML = html;
+
+            // Add event listeners to watch buttons
+            document.querySelectorAll('.watch-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const movieId = btn.getAttribute('data-movie-id');
+                    const movie = allMovies.find(m => getItemId(m) === movieId);
+                    if (movie) {
+                        toggleWatched(movie);
+                    }
+                });
+            });
         }
 
         searchInput.addEventListener('input', processAndRender);
@@ -345,6 +549,5 @@
 
         loadMovies();
     </script>
-    <footer></footer>
 </body>
 </html>
